@@ -15775,7 +15775,7 @@ var store = (0, _redux.createStore)((0, _redux.combineReducers)({
     lyrics: _lyricsReducer2.default,
     player: _playerReducer2.default
 }),
-/* preloadedState, */composeEnhancers((0, _redux.applyMiddleware)((0, _reduxLogger.createLogger)(), _reduxThunk2.default)));
+/* preloadedState, */composeEnhancers((0, _redux.applyMiddleware)(_reduxThunk2.default, (0, _reduxLogger.createLogger)())));
 
 exports.default = store;
 

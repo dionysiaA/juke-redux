@@ -11,7 +11,7 @@ const store = createStore(combineReducers({
     player: playerReducer
   }),
   /* preloadedState, */ composeEnhancers(
-  applyMiddleware(createLogger(), thunkMiddleware)
+  applyMiddleware(thunkMiddleware, createLogger())
 ));
 
 export default store;
