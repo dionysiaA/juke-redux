@@ -5,8 +5,8 @@ import { hashHistory } from 'react-router';
 import initialState from '../initialState';
 import AUDIO from '../audio';
 
-import Albums from '../components/Albums.js';
-import Album from '../components/Album';
+import store from '../store';
+import * as player from '../action-creators/player';
 import Sidebar from '../components/Sidebar';
 import Player from '../components/Player';
 
@@ -16,7 +16,7 @@ export default class AppContainer extends Component {
 
   constructor (props) {
     super(props);
-    this.state = initialState;
+    this.state = Object.assign({}, initialState, store.getState());
 
     this.toggle = this.toggle.bind(this);
     this.toggleOne = this.toggleOne.bind(this);
@@ -30,7 +30,14 @@ export default class AppContainer extends Component {
     this.addSongToPlaylist = this.addSongToPlaylist.bind(this);
   }
 
+  componentWillUnmount(){
+    this.unsubscribe();
+  }
   componentDidMount () {
+
+    this.unsubscribe = store.subscribe(() => {
+      console.log('State changed!!', this.setState(store.getState()));
+    });
 
     Promise
       .all([
@@ -56,47 +63,35 @@ export default class AppContainer extends Component {
   }
 
   play () {
-    AUDIO.play();
-    this.setState({ isPlaying: true });
+    store.dispatch(player.play())
   }
 
   pause () {
-    AUDIO.pause();
-    this.setState({ isPlaying: false });
+    store.dispatch(player.pause())
   }
 
   load (currentSong, currentSongList) {
-    AUDIO.src = currentSong.audioUrl;
-    AUDIO.load();
-    this.setState({
-      currentSong: currentSong,
-      currentSongList: currentSongList
-    });
+    store.dispatch(player.load(currentSong, currentSongList))
   }
 
   startSong (song, list) {
-    this.pause();
-    this.load(song, list);
-    this.play();
+    store.dispatch(player.startSong(song, list))
   }
 
   toggleOne (selectedSong, selectedSongList) {
-    if (selectedSong.id !== this.state.currentSong.id)
-      this.startSong(selectedSong, selectedSongList);
-    else this.toggle();
+    store.dispatch(player.toggleOne(selectedSong, selectedSongList))
   }
 
   toggle () {
-    if (this.state.isPlaying) this.pause();
-    else this.play();
+    store.dispatch(player.toggle())
   }
 
   next () {
-    this.startSong(...skip(1, this.state));
+    store.dispatch(player.next())
   }
 
   prev () {
-    this.startSong(...skip(-1, this.state));
+    store.dispatch(player.prev())
   }
 
   setProgress (progress) {
@@ -207,9 +202,9 @@ export default class AppContainer extends Component {
         }
         </div>
         <Player
-          currentSong={this.state.currentSong}
-          currentSongList={this.state.currentSongList}
-          isPlaying={this.state.isPlaying}
+          currentSong={this.state.player.currentSong}
+          currentSongList={this.state.player.currentSongList}
+          isPlaying={this.state.player.isPlaying}
           progress={this.state.progress}
           next={this.next}
           prev={this.prev}
