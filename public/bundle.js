@@ -13776,7 +13776,7 @@ var AppContainer = function (_Component) {
   }, {
     key: 'setProgress',
     value: function setProgress(progress) {
-      this.setState({ progress: progress });
+      _store2.default.dispatch(player.setProgress(progress));
     }
   }, {
     key: 'selectAlbum',
@@ -13910,7 +13910,7 @@ var AppContainer = function (_Component) {
           currentSong: this.state.player.currentSong,
           currentSongList: this.state.player.currentSongList,
           isPlaying: this.state.player.isPlaying,
-          progress: this.state.progress,
+          progress: this.state.player.progress,
           next: this.next,
           prev: this.prev,
           toggle: this.toggle
@@ -15491,7 +15491,7 @@ var Sidebar = function Sidebar(props) {
         _react2.default.createElement(
           _reactRouter.Link,
           { to: '/lyrics' },
-          'Lyrics'
+          'LYRICS'
         )
       )
     ),
@@ -30935,6 +30935,11 @@ var Lyrics = function Lyrics(props) {
       _react2.default.createElement(
         "div",
         null,
+        _react2.default.createElement(
+          "h4",
+          null,
+          "Search Lyrics"
+        ),
         _react2.default.createElement("input", { type: "text", value: artistQuery, placeholder: "Artist", onChange: artistChange }),
         _react2.default.createElement("input", { type: "text", value: songQuery, placeholder: "Song", onChange: songChange })
       ),
@@ -31894,7 +31899,7 @@ exports['default'] = thunk;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.prev = exports.next = exports.toggleOne = exports.toggle = exports.startSong = exports.load = exports.pause = exports.play = exports.setCurrentSongList = exports.setCurrentSong = exports.stopPlaying = exports.startPlaying = undefined;
+exports.prev = exports.next = exports.toggleOne = exports.toggle = exports.startSong = exports.load = exports.pause = exports.play = exports.setProgress = exports.setCurrentSongList = exports.setCurrentSong = exports.stopPlaying = exports.startPlaying = undefined;
 
 var _constants = __webpack_require__(83);
 
@@ -31903,6 +31908,10 @@ var _audio = __webpack_require__(153);
 var _audio2 = _interopRequireDefault(_audio);
 
 var _utils = __webpack_require__(165);
+
+var _axios = __webpack_require__(77);
+
+var _axios2 = _interopRequireDefault(_axios);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -31926,6 +31935,13 @@ var setCurrentSongList = exports.setCurrentSongList = function setCurrentSongLis
   return {
     type: _constants.SET_LIST,
     currentSongList: currentSongList
+  };
+};
+
+var setProgress = exports.setProgress = function setProgress(progress) {
+  return {
+    type: _constants.SET_PROGRESS,
+    progress: progress
   };
 };
 
@@ -32053,6 +32069,10 @@ exports.default = function () {
       newState.currentSongList = action.currentSongList;
       break;
 
+    case _constants.SET_PROGRESS:
+      newState.progress = action.progress;
+      break;
+
     default:
       return state;
 
@@ -32065,7 +32085,7 @@ var _constants = __webpack_require__(83);
 
 var initialPlayerState = exports.initialPlayerState = {
   currentSong: {},
-  currentSongList: ['testFromPlayerReducer'],
+  currentSongList: [],
   isPlaying: false,
   progress: 0
 };

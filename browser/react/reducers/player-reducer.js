@@ -2,12 +2,13 @@ import {
   START_PLAYING,
   STOP_PLAYING,
   SET_CURRENT_SONG,
-  SET_LIST
+  SET_LIST,
+  SET_PROGRESS
 } from '../constants';
 
 export const initialPlayerState = {
   currentSong: {},
-  currentSongList: ['testFromPlayerReducer'],
+  currentSongList: [],
   isPlaying: false,
   progress: 0
 };
@@ -32,6 +33,10 @@ export default function (state = initialPlayerState, action) {
 
     case SET_LIST:
       newState.currentSongList = action.currentSongList;
+      break;
+
+    case SET_PROGRESS:
+      newState.progress = action.progress;
       break;
 
     default:

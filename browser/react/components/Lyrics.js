@@ -21,6 +21,7 @@ const Lyrics = (props) => {
     <div id="lyrics">
       <form onSubmit={handleSubmit}>
         <div>
+          <h4>Search Lyrics</h4>
           <input type="text" value={artistQuery} placeholder="Artist" onChange={artistChange} />
           <input type="text" value={songQuery} placeholder="Song" onChange={songChange} />
         </div>

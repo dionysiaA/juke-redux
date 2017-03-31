@@ -20,7 +20,7 @@ const Sidebar = (props) => {
       </section>
       <section>
         <h4 className="menu-item">
-          <Link to='/lyrics'>Lyrics</Link>
+          <Link to='/lyrics'>LYRICS</Link>
         </h4>
       </section>
       <hr />

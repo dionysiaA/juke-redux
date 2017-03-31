@@ -1,6 +1,7 @@
-import {START_PLAYING, STOP_PLAYING, SET_CURRENT_SONG, SET_LIST} from '../constants'
+import {START_PLAYING, STOP_PLAYING, SET_CURRENT_SONG, SET_LIST, SET_PROGRESS} from '../constants'
 import AUDIO from '../audio';
 import { skip } from '../utils';
+import axios from 'axios';
 
 export const startPlaying = () => ({ type: START_PLAYING });
 export const stopPlaying = () => ({ type: STOP_PLAYING });
@@ -18,6 +19,14 @@ export const setCurrentSongList = (currentSongList) => {
     currentSongList
   }
 };
+
+export const setProgress = (progress) => {
+  return {
+    type: SET_PROGRESS,
+    progress
+  }
+};
+
 
 export const play = () => {
   return (dispatch) => {
