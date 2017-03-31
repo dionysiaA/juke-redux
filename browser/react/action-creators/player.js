@@ -2,19 +2,19 @@ import {START_PLAYING, STOP_PLAYING, SET_CURRENT_SONG, SET_LIST} from '../consta
 import AUDIO from '../audio';
 import { skip } from '../utils';
 
-export const startPlaying = () => { type: START_PLAYING };
-export const stopPlaying = () => { type: STOP_PLAYING };
+export const startPlaying = () => ({ type: START_PLAYING });
+export const stopPlaying = () => ({ type: STOP_PLAYING });
 
 export const setCurrentSong = (currentSong) => {
   return {
-    type: 'SET_CURRENT_SONG',
+    type: SET_CURRENT_SONG,
     currentSong
   }
 };
 
 export const setCurrentSongList = (currentSongList) => {
   return {
-    type: 'SET_LIST',
+    type: SET_LIST,
     currentSongList
   }
 };

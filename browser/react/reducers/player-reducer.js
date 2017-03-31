@@ -7,7 +7,7 @@ import {
 
 export const initialPlayerState = {
   currentSong: {},
-  currentSongList: [],
+  currentSongList: ['testFromPlayerReducer'],
   isPlaying: false,
   progress: 0
 };
