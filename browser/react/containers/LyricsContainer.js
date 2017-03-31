@@ -1,26 +1,36 @@
 import React from 'react';
 import store from '../store';
-import {setLyrics} from '../action-creators/lyrics';
-
-// const unsubscribe = store.subscribe(function () {
-//   console.log('----------------');
-//   console.log('State changed!!', store.getState());
-// });
-//
-// store.dispatch(setLyrics('I can feel it coming in the air tonight ... hold on ...'));
-// store.dispatch(setLyrics('Never gonna give you up, never gonna let you down'));
-//
-// unsubscribe();
-//
-// store.dispatch(setLyrics('Hello, darkness, my old friend.'));
-
-
+import {fetchLyrics} from '../action-creators/lyrics';
+import Lyrics from '../components/lyrics';
 
 export default class LyricsContainer extends React.Component {
 
   constructor (props) {
     super(props);
-    this.state = store.getState();
+    this.state = Object.assign({
+      artistQuery: '',
+      songQuery: ''
+    }, store.getState());
+
+    this.handleArtistInput = this.handleArtistInput.bind(this);
+    this.handleSongInput = this.handleSongInput.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+
+  }
+
+  handleArtistInput(artist) {
+    this.setState({ artistQuery: artist })
+  }
+
+  handleSongInput(song) {
+    this.setState({ songQuery: song })
+  }
+
+  handleSubmit() {
+    event.preventDefault();
+    if (this.state.artistQuery && this.state.songQuery) {
+      store.dispatch(fetchLyrics(this.state.artistQuery, this.state.songQuery))
+    }
   }
 
   componentDidMount(){
@@ -36,7 +46,14 @@ export default class LyricsContainer extends React.Component {
   render () {
 
     return (
-      <h1>Just a container, more to come!</h1>
+      <Lyrics
+        text={this.state.text}
+        setArtist={this.handleArtistInput}
+        setSong={this.handleSongInput}
+        artistQuery={this.state.artistQuery}
+        songQuery={this.state.songQuery}
+        handleSubmit={this.handleSubmit}
+      />
     );
   }
 }
