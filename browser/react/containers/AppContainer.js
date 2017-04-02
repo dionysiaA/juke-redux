@@ -1,16 +1,15 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { hashHistory } from 'react-router';
-
 import initialState from '../initialState';
 import AUDIO from '../audio';
-
 import store from '../store';
 import * as player from '../action-creators/player';
+import * as actionAlbums from '../action-creators/albums';
+import * as actionArtists from '../action-creators/artists';
+import * as actionPlaylists from '../action-creators/playlists';
+import * as actionSongs from '../action-creators/songs';
 import Sidebar from '../components/Sidebar';
 import Player from '../components/Player';
-
-import { convertAlbum, convertAlbums, convertSong, skip } from '../utils';
 
 export default class AppContainer extends Component {
 
@@ -18,7 +17,6 @@ export default class AppContainer extends Component {
     super(props);
     this.state = Object.assign({}, initialState, store.getState());
 
-    console.log(this.state.player.currentSongList)
     this.toggle = this.toggle.bind(this);
     this.toggleOne = this.toggleOne.bind(this);
     this.next = this.next.bind(this);
@@ -56,11 +54,9 @@ export default class AppContainer extends Component {
   }
 
   onLoad (albums, artists, playlists) {
-    this.setState({
-      albums: convertAlbums(albums),
-      artists: artists,
-      playlists: playlists
-    });
+    store.dispatch(actionAlbums.getAlbumsNoAjaxCall(albums));
+    store.dispatch(actionArtists.getArtistsNoAjaxCall(artists));
+    store.dispatch(actionPlaylists.getPlaylistNoAjaxCall(playlists));
   }
 
   play () {
@@ -100,83 +96,27 @@ export default class AppContainer extends Component {
   }
 
   selectAlbum (albumId) {
-    axios.get(`/api/albums/${albumId}`)
-      .then(res => res.data)
-      .then(album => this.setState({
-        selectedAlbum: convertAlbum(album)
-      }));
+    store.dispatch(actionAlbums.selectAlbum(albumId));
   }
 
   selectArtist (artistId) {
-    Promise
-      .all([
-        axios.get(`/api/artists/${artistId}`),
-        axios.get(`/api/artists/${artistId}/albums`),
-        axios.get(`/api/artists/${artistId}/songs`)
-      ])
-      .then(res => res.map(r => r.data))
-      .then(data => this.onLoadArtist(...data));
-  }
-
-  onLoadArtist (artist, albums, songs) {
-    songs = songs.map(convertSong);
-    albums = convertAlbums(albums);
-    artist.albums = albums;
-    artist.songs = songs;
-
-    this.setState({ selectedArtist: artist });
+   store.dispatch(actionArtists.selectArtist(artistId));
   }
 
   addPlaylist (playlistName) {
-    axios.post('/api/playlists', { name: playlistName })
-      .then(res => res.data)
-      .then(playlist => {
-        this.setState({
-          playlists: [...this.state.playlists, playlist]
-        }, () => {
-          hashHistory.push(`/playlists/${playlist.id}`)
-        });
-      });
+    store.dispatch(actionPlaylists.addPlaylist(playlistName));
   }
 
   selectPlaylist (playlistId) {
-    axios.get(`/api/playlists/${playlistId}`)
-      .then(res => res.data)
-      .then(playlist => {
-        playlist.songs = playlist.songs.map(convertSong);
-        this.setState({
-          selectedPlaylist: playlist
-        });
-      });
+     store.dispatch(actionPlaylists.selectPlaylist(playlistId));
   }
 
   loadSongs (songs) {
-    axios.get('/api/songs')
-      .then(res => res.data)
-      .then(songs => {
-        this.setState({
-          songs: songs
-        });
-      });
+    store.dispatch(actionSongs.getSongs())
   }
 
   addSongToPlaylist (playlistId, songId) {
-    return axios.post(`/api/playlists/${playlistId}/songs`, {
-      id: songId
-    })
-      .then(res => res.data)
-      .then(song => {
-        const selectedPlaylist = this.state.selectedPlaylist;
-        const songs = this.state.selectedPlaylist.songs;
-        const newSongs = [...songs, convertSong(song)];
-        const newSelectedPlaylist = Object.assign({}, selectedPlaylist, {
-          songs: newSongs
-        });
-
-        this.setState({
-          selectedPlaylist: newSelectedPlaylist
-        });
-      });
+    return store.dispatch(actionPlaylists.addSongToPlaylist(playlistId, songId));
   }
 
   render () {
@@ -195,7 +135,8 @@ export default class AppContainer extends Component {
     return (
       <div id="main" className="container-fluid">
         <div className="col-xs-2">
-          <Sidebar playlists={this.state.playlists} />
+          {/*TODO: fix the sidebar here*/}
+          <Sidebar playlists={this.state.playlists.playlists} />
         </div>
         <div className="col-xs-10">
         {

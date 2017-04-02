@@ -27,7 +27,6 @@ export const setProgress = (progress) => {
   }
 };
 
-
 export const play = () => {
   return (dispatch) => {
     AUDIO.play();

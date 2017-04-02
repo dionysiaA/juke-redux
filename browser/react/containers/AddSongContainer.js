@@ -28,9 +28,9 @@ class AddSongContainer extends React.Component {
   handleSubmit (evt) {
     evt.preventDefault();
 
-    const playlistId = this.props.selectedPlaylist.id;
+    const playlistId = this.props.playlists.selectedPlaylist.id;
     const songId = this.state.songId;
-
+    console.log(playlistId, songId, 'playlistID songID');
     this.props.addSongToPlaylist(playlistId, songId)
       .catch(err => {
         this.setState({ error: true });
@@ -39,7 +39,7 @@ class AddSongContainer extends React.Component {
 
   render () {
 
-    const songs = this.props.songs;
+    const songs = this.props.songs.songs;
     const error = this.state.error;
     const songId = this.state.songId;
 

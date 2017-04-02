@@ -2,11 +2,12 @@ import React from 'react';
 
 const Songs = (props) => {
 
+  console.log(props, 'props in songs');
   const songs = props.songs;
-  const currentSong = props.currentSong;
-  const isPlaying = props.isPlaying;
+  const currentSong = (props.player) ? props.player.currentSong : props.currentSong;
+  const isPlaying = (props.player) ? props.player.isPlaying : props.isPlaying;
   const toggle = props.toggleOne;
-
+  console.log(props.toggleOne, 'toggle!')
   return (
     <table className='table'>
       <thead>
@@ -18,8 +19,7 @@ const Songs = (props) => {
         </tr>
       </thead>
       <tbody>
-        {
-          songs && songs.map(song => (
+        {  songs && songs.map(song => (
             <tr key={song.id}>
               <td>
                 <button className="btn btn-default btn-xs" onClick={() => toggle(song, songs)}>

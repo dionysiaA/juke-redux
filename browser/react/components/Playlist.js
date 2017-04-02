@@ -20,7 +20,10 @@ class Playlist extends React.Component {
 
   render () {
 
-    const playlist = this.props.selectedPlaylist;
+    const playlist = this.props.playlists.selectedPlaylist;
+    console.log( this.props, '    props in playlists ');
+    console.log( playlist.songs, '   playlists.songs ');
+    console.log( playlist.name, '   playlists.name ');
 
     return (
       <div>

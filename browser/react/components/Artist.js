@@ -12,7 +12,7 @@ class Artist extends React.Component {
 
   render () {
 
-    const artist = this.props.selectedArtist;
+    const artist = this.props.artists.selectedArtist;
     const albums = artist.albums || [];
     const songs = artist.songs || [];
     const children = this.props.children;
