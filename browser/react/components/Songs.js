@@ -2,12 +2,11 @@ import React from 'react';
 
 const Songs = (props) => {
 
-  console.log(props, 'props in songs');
   const songs = props.songs;
   const currentSong = (props.player) ? props.player.currentSong : props.currentSong;
   const isPlaying = (props.player) ? props.player.isPlaying : props.isPlaying;
   const toggle = props.toggleOne;
-  console.log(props.toggleOne, 'toggle!')
+
   return (
     <table className='table'>
       <thead>

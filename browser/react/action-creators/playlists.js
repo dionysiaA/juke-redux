@@ -37,11 +37,9 @@ export const addPlaylist = function (playlistName) {
      axios.post('/api/playlists', { name: playlistName })
       .then(res => res.data)
       .then(playlist => {
-        console.log(...getState().playlists.playlists, 'playlists in action acreator');
-        console.log(...getState().playlists, 'playlists in action acreator 2za');
         dispatch(receivePlaylists([...getState().playlists.playlists, playlist]))
         hashHistory.push(`/playlists/${playlist.id}`)
-        //how can we add the hash history when the
+
         // this.setState({
         //   playlists: [...this.state.playlists, playlist]
         // }, () => {
@@ -74,7 +72,6 @@ export const addSongToPlaylist = (playlistId, songId) =>
         const newSelectedPlaylist = Object.assign({}, selectedPlaylist, {
           songs: newSongs
         });
-        console.log(newSelectedPlaylist, 'newSelectedPlaylist');
         dispatch(receivePlaylist(newSelectedPlaylist))
 
       });

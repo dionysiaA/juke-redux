@@ -4,7 +4,6 @@ import { Link } from 'react-router';
 const Artists = (props) => {
 
   const artists = props.artists;
-  console.log(artists, 'artists');
   return (
     <div>
       <h3>Artists</h3>

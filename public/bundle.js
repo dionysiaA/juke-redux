@@ -4644,12 +4644,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var Songs = function Songs(props) {
 
-  console.log(props, 'props in songs');
   var songs = props.songs;
   var currentSong = props.player ? props.player.currentSong : props.currentSong;
   var isPlaying = props.player ? props.player.isPlaying : props.isPlaying;
   var toggle = props.toggleOne;
-  console.log(props.toggleOne, 'toggle!');
+
   return _react2.default.createElement(
     'table',
     { className: 'table' },
@@ -13724,10 +13723,6 @@ var Playlist = function (_React$Component) {
     value: function render() {
 
       var playlist = this.props.playlists.selectedPlaylist;
-      console.log(this.props, '    props in playlists ');
-      console.log(playlist.songs, '   playlists.songs ');
-      console.log(playlist.name, '   playlists.name ');
-
       return _react2.default.createElement(
         'div',
         null,
@@ -15456,7 +15451,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var Artists = function Artists(props) {
 
   var artists = props.artists;
-  console.log(artists, 'artists');
   return _react2.default.createElement(
     'div',
     null,
@@ -15921,7 +15915,6 @@ var AddSongContainer = function (_React$Component) {
 
       var playlistId = this.props.playlists.selectedPlaylist.id;
       var songId = this.state.songId;
-      console.log(playlistId, songId, 'playlistID songID');
       this.props.addSongToPlaylist(playlistId, songId).catch(function (err) {
         _this2.setState({ error: true });
       });
@@ -32327,13 +32320,9 @@ var addPlaylist = exports.addPlaylist = function addPlaylist(playlistName) {
     _axios2.default.post('/api/playlists', { name: playlistName }).then(function (res) {
       return res.data;
     }).then(function (playlist) {
-      var _console, _console2;
-
-      (_console = console).log.apply(_console, _toConsumableArray(getState().playlists.playlists).concat(['playlists in action acreator']));
-      (_console2 = console).log.apply(_console2, _toConsumableArray(getState().playlists).concat(['playlists in action acreator 2za']));
       dispatch(receivePlaylists([].concat(_toConsumableArray(getState().playlists.playlists), [playlist])));
       _reactRouter.hashHistory.push('/playlists/' + playlist.id);
-      //how can we add the hash history when the
+
       // this.setState({
       //   playlists: [...this.state.playlists, playlist]
       // }, () => {
@@ -32367,7 +32356,6 @@ var addSongToPlaylist = exports.addSongToPlaylist = function addSongToPlaylist(p
       var newSelectedPlaylist = Object.assign({}, selectedPlaylist, {
         songs: newSongs
       });
-      console.log(newSelectedPlaylist, 'newSelectedPlaylist');
       dispatch(receivePlaylist(newSelectedPlaylist));
     });
   };

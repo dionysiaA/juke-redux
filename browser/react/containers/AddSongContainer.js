@@ -30,7 +30,6 @@ class AddSongContainer extends React.Component {
 
     const playlistId = this.props.playlists.selectedPlaylist.id;
     const songId = this.state.songId;
-    console.log(playlistId, songId, 'playlistID songID');
     this.props.addSongToPlaylist(playlistId, songId)
       .catch(err => {
         this.setState({ error: true });
